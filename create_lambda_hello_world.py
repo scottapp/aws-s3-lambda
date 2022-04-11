@@ -5,7 +5,7 @@ from zipfile import ZipFile
 iam_client = boto3.client('iam')
 lambda_client = boto3.client('lambda')
 
-"""
+
 role_policy = {
   "Version": "2012-10-17",
   "Statement": [
@@ -21,8 +21,7 @@ role_policy = {
 }
 response = iam_client.create_role(RoleName='LambdaBasicExecution',
                                   AssumeRolePolicyDocument=json.dumps(role_policy))
-print(response)                                  
-"""
+print(response)
 
 
 function_name = 'HelloWorld'
