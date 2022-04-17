@@ -43,6 +43,7 @@ if __name__ == '__main__':
     }
     """
 
+    """
     # create basic lambda execution role
     res = iam_client.create_role(AssumeRolePolicyDocument=json.dumps(json.loads(lambda_trust_policy)),
                                  Path='/',
@@ -55,6 +56,7 @@ if __name__ == '__main__':
                                         RoleName='{}_LambdaBasicExecutionRole'.format(project_id))
     print(res)
     assert res and res['ResponseMetadata']['HTTPStatusCode'] == 200
+    """
 
     # create role to start Glue Crawler
     res = iam_client.create_role(AssumeRolePolicyDocument=json.dumps(json.loads(lambda_trust_policy)),

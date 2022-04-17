@@ -6,10 +6,17 @@ import boto3
 if __name__ == '__main__':
     load_dotenv()
 
+    project_id = os.getenv('PROJECT_ID')
+    role_name = os.getenv('GLUE_CRAWLER_NAME')
     rule_name = os.getenv('EVENT_RULE_NAME')
-    assert rule_name
-
     target_arn = os.getenv('EVENT_RULE_TARGET_ARN')
+
+    assert project_id
+    assert role_name
+    assert rule_name
+    assert target_arn
+
+    full_crawler_name = '{}_{}'.format(project_id, role_name)
 
     pattern = """
     {
@@ -20,12 +27,11 @@ if __name__ == '__main__':
     "Glue Crawler State Change"
   ],
   "detail": {
-    "state": [
-      "Succeeded"
-    ]
+    "crawlerName": "%s",
+    "state": ["Succeeded"]
   }
     }
-    """
+    """ % full_crawler_name
 
     client = boto3.client('events')
 

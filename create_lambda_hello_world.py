@@ -52,3 +52,35 @@ with open('tmp.zip', 'rb') as f:
 response = lambda_client.update_function_code(FunctionName=function_name, ZipFile=zipped_code)
 print(response)
 """
+
+rule_name = 'EV_CRAWLER_SUCCEED'
+pattern = """
+        {
+      "source": [
+        "aws.glue"
+      ],
+      "detail-type": [
+        "Glue Crawler State Change"
+      ],
+      "detail": {
+        "state": ["Succeeded"]
+      }
+        }
+"""
+
+client = boto3.client('events')
+
+response = client.put_rule(
+        Name=rule_name,
+        EventPattern=pattern,
+        State='ENABLED',
+        EventBusName='default'
+)
+print(response)
+
+response = client.put_targets(
+    Rule=rule_name,
+    EventBusName='default',
+    Targets=[{'Id': 'Target', 'Arn': 'arn:aws:lambda:ap-northeast-1:922656660811:function:HelloWorld'}]
+)
+print(response)
