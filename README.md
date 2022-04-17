@@ -1,6 +1,6 @@
 # AWS Glue Lambda CloudWatch Utility Script
 
-The scripts in this repo will perform the following tasks:
+Instead of using CloudFormation to generate the necessary stack configurations, the scripts in this repo can help perform the following tasks:
 
 - create GlueStartCrawler IAM policy
 - create AWSGlueServiceRole for the glue crawler to access s3 content
