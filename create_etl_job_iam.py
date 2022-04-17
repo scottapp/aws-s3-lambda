@@ -41,6 +41,12 @@ def create_basic_glue_role(client, role_name):
                              Path='/',
                              RoleName=role_name)
     assert res and res['ResponseMetadata']['HTTPStatusCode'] == 200
+
+    # attach basic service policy
+    res = client.attach_role_policy(PolicyArn='arn:aws:iam::aws:policy/service-role/AWSGlueServiceRole',
+                                    RoleName=role_name)
+
+    assert res and res['ResponseMetadata']['HTTPStatusCode'] == 200
     return res
 
 
@@ -78,7 +84,7 @@ if __name__ == '__main__':
     try:
         policy = json.loads(s3_access_policy)
         # enter s3 bucket arns here
-        policy['Statement'][0]['Resource'] = ['arn']
+        policy['Statement'][0]['Resource'] = [""]
         policy_arn = create_policy(iam_client, '{}_S3ACCESS'.format(project_id), policy)
         print(policy_arn)
     except iam_client.exceptions.EntityAlreadyExistsException as ex:
