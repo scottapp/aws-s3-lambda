@@ -94,11 +94,11 @@ if __name__ == '__main__':
     time.sleep(1)
     """
 
-    with ZipFile('tmp.zip', 'w') as zip_fp:
+    with ZipFile('{}.zip'.format(function_name), 'w') as zip_fp:
         zip_fp.write(f'src/{function_name}/handler.py')
 
     zipped_code = None
-    with open('tmp.zip', 'rb') as f:
+    with open('{}.zip'.format(function_name), 'rb') as f:
         zipped_code = f.read()
 
     role = iam_client.get_role(RoleName=role_name)
@@ -161,40 +161,3 @@ if __name__ == '__main__':
         SourceArn=rule_arn
     )
     print(res)
-
-    """
-    # add permission for s3 to invoke lambda function
-    res = lambda_client.add_permission(
-        Action='lambda:InvokeFunction',
-        FunctionName=function_name,
-        Principal='s3.amazonaws.com',
-        SourceAccount=source_account,
-        SourceArn=f'arn:aws:s3:::{bucket_name}',
-        StatementId='s3',
-    )
-    print(res)
-    assert res['ResponseMetadata']['HTTPStatusCode'] == 201
-    """
-
-    """
-    zipped_code = None
-    with open('tmp.zip', 'rb') as f:
-        zipped_code = f.read()
-
-    response = lambda_client.update_function_code(FunctionName=function_name, ZipFile=zipped_code)
-    print(response)    
-    """
-
-    """
-    # setup event notification
-    bucket_notification = s3_client.BucketNotification(bucket_name)
-    bucket_notification.load()
-    res = bucket_notification.put(
-        NotificationConfiguration={'LambdaFunctionConfigurations':
-            [
-                {'LambdaFunctionArn': lambda_arn,
-                 'Events': ['s3:ObjectCreated:*']}
-            ]
-        })
-    print(res)
-    """

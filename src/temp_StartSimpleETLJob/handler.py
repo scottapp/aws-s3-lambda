@@ -7,7 +7,7 @@ glue = boto3.client(service_name='glue',
 
 def lambda_handler(event, context):
     try:
-        glue.start_job_run(Name='SimpleETLJob')
+        glue.start_job_run(JobName='SimpleETLJob')
     except Exception as e:
         print(e)
         print('Error start job run')

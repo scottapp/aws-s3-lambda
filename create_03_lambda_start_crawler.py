@@ -67,7 +67,7 @@ if __name__ == '__main__':
     print(response)    
     """
 
-    # setup event notification
+    # setup s3 bucket event notification
     bucket_notification = s3_client.BucketNotification(bucket_name)
     bucket_notification.load()
     res = bucket_notification.put(
